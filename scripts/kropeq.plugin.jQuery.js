@@ -18,6 +18,7 @@
 				if($(this).val() === ""){
 					$(this).val(rememberInfo);
 				};
+
 			});
 
 			// po kliknieciu na dane pole, jesli jest wartosc wejsciowa
@@ -34,15 +35,15 @@
 				// key "down"
 				if(e.which == 40){
 					if($(this).next('input').length !== 0){
-						$(this).next().focus();
 						$(this).mouseleave();
+						$(this).next().focus();
 						$(this).next().mouseenter();
 					}
 				// key "up"
 				} else if (e.which == 38){
 					if($(this).prev('input').length !== 0){
-						$(this).prev().focus();
 						$(this).mouseleave();
+						$(this).prev().focus();
 						$(this).prev().mouseenter();
 					}
 				}
@@ -64,6 +65,9 @@
 				if($(this).val() === ""){
 					$(this).val(rememberInfo);
 					$(this).blur();
+					if($(this).hasClass("incorrect")){
+						$(this).removeClass("incorrect");
+					};
 				} else {
 					$(this).blur();
 				}
@@ -72,7 +76,19 @@
 	};
 
 	$.fn.isValidUsername = function(){
-
+		return this.each(function(){
+			var pattern = new RegExp("^[a-z0-9]{3,16}$");
+			if(pattern.test($(this).val())){
+				if($(this).hasClass("incorrect")){
+					$(this).removeClass("incorrect");
+				}
+			} else {
+				if(!$(this).hasClass("incorrect")){
+					$(this).addClass("incorrect");
+				}
+			}
+		});
+		
 	}
 
 	$.fn.isValidPassword = function(){

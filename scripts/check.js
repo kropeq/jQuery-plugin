@@ -13,6 +13,7 @@ $(document).ready(function (){
 
 	// klikniecie buttona aktywuje funkcje
 	send.click(function() {
-		alert("Wciąż działa!");
+		username.isValidUsername();
+		password.isValidUsername();
 	});
 });
