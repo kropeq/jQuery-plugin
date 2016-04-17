@@ -75,6 +75,9 @@
 		});
 	};
 
+	// z gory ustalone regex username
+	// dozwolona kombinacja tylko malych liter i cyfr 
+	// o lacznej dlugosci <3,16>
 	$.fn.isValidUsername = function(){
 		return this.each(function(){
 			var pattern = new RegExp("^[a-z0-9]{3,16}$");
@@ -91,8 +94,32 @@
 		
 	}
 
-	$.fn.isValidPassword = function(){
-		
+	// mozliwosc ustawienia wlasnego regexu hasla
+	// a jesli brak, to jest domyslny regex
+	$.fn.isValidPassword = function(options){
+		return this.each(function(){
+			var settings = $.extend({
+				regex : "^[A-Za-z0-9]{8,20}$"
+			}, options);
+			var pattern = new RegExp(settings.regex);
+			if(pattern.test($(this).val())){
+				if($(this).val().match(/[0-9]/g) !== null 
+					&& $(this).val().match(/[a-z]/g) !== null
+					&& $(this).val().match(/[A-Z]/g) !== null){
+					if($(this).hasClass("incorrect")){
+						$(this).removeClass("incorrect");
+					}
+				} else {
+					if(!$(this).hasClass("incorrect")){
+						$(this).addClass("incorrect");
+					}
+				}			
+			} else {
+				if(!$(this).hasClass("incorrect")){
+					$(this).addClass("incorrect");
+				}
+			}
+		});
 	}
 
 	$.fn.isValidEmail = function(){

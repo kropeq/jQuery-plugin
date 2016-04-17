@@ -14,6 +14,6 @@ $(document).ready(function (){
 	// klikniecie buttona aktywuje funkcje
 	send.click(function() {
 		username.isValidUsername();
-		password.isValidUsername();
+		password.isValidPassword();
 	});
 });
