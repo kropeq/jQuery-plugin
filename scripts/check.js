@@ -14,7 +14,7 @@ $(document).ready(function (){
 	// klikniecie buttona aktywuje funkcje
 	send.click(function() {
 		username.isValidUsername();
-		password.isValidPassword();
-		email.isValidEmail();
+		password.isValidEmail({info: "Niepoprawnie wpisane haslo!"});
+		email.isValidEmail({labelColor : {color: "green"}});
 	});
 });

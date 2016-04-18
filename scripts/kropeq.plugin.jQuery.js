@@ -125,14 +125,29 @@
 	$.fn.isValidEmail = function(options){
 		return this.each(function(){
 			var settings = $.extend({
-				regex : "^(\w|\.|\-){2,}@[a-z]{2,}\.[a-z]{2,3}$"
+				regex : "^(\w|\.|\-){2,}@[a-z0-9]{2,}\.[a-z]{2,3}$",
+				labelStyle : {display:"block",width:"200px",height: "10px",margin:"5px auto", },
+				labelColor : {color: "red"},
+				className : "emailInfo",
+				info : "Niepoprawnie wpisany email!"
 			}, options);
 
 			var pattern = new RegExp(settings.regex);
 			if(pattern.test($(this).val())){
-				if($(this).hasClass('incorrect'))
-					$(this).removeClass('incorrect')
+				if($(this).hasClass('incorrect')){
+					$(this).removeClass('incorrect');
+				}
+			// jesli nie zgadza sie email
+			// wyswietlenie informacji powyzej przez 2,5s
+			// w postaci labelki z trescia bledu
 			} else {
+				// zabezpieczenie przed powielaniem dodawania labelki
+				if(!$(this).prev().hasClass(settings.className)){
+					$('<label class="'+settings.className+'">'+settings.info+'</label>').insertBefore($(this)).css(settings.labelStyle).css(settings.labelColor);
+					window.setTimeout(function(){
+						$('.'+settings.className).remove();
+					}, 2500);
+				}
 				if(!$(this).hasClass('incorrect'))
 					$(this).addClass('incorrect');
 			}
