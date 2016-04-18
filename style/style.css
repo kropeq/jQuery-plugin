@@ -1,7 +1,9 @@
 #dataForm {
+	padding: 10px 0 10px 0;
 	margin: 200px auto;
 	width: 350px;
 	background-color: rgba(192,179,179,0.7);
+	border-radius: 25px;
 }
 
 input, button {
@@ -12,11 +14,11 @@ input, button {
 }
 
 input:first-child {
-	margin-top: 50px;
+	margin-top: 20px;
 }
 
 input:last-child {
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 
 body {

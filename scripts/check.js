@@ -6,15 +6,14 @@ $(document).ready(function (){
 	var password = $("#password");
 	var email = $("#email");
 
-	username.info({info : "Wprowadź username"});
-	password.info({info : "Wprowadź hasło"});
-	retyped.info({info : "Powtórz hasło"});
-	email.info({info : "Wpisz e-mail"});
+	username.textInput({info : "Wprowadź username"});
+	password.passInput({info : "Wprowadź hasło"});
+	email.textInput({info : "Wpisz e-mail"});
 
 	// klikniecie buttona aktywuje funkcje
 	send.click(function() {
 		username.isValidUsername();
-		password.isValidEmail({info: "Niepoprawnie wpisane haslo!"});
+		password.isValidPassword();
 		email.isValidEmail({labelColor : {color: "green"}});
 	});
 });
