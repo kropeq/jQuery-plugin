@@ -104,8 +104,8 @@
 			var pattern = new RegExp(settings.regex);
 			if(pattern.test($(this).val())){
 				if($(this).val().match(/[0-9]/g) !== null 
-					&& $(this).val().match(/[a-z]/g) !== null
-					&& $(this).val().match(/[A-Z]/g) !== null){
+				&& $(this).val().match(/[a-z]/g) !== null
+				&& $(this).val().match(/[A-Z]/g) !== null){
 					if($(this).hasClass("incorrect")){
 						$(this).removeClass("incorrect");
 					}
@@ -122,7 +122,20 @@
 		});
 	}
 
-	$.fn.isValidEmail = function(){
-		
+	$.fn.isValidEmail = function(options){
+		return this.each(function(){
+			var settings = $.extend({
+				regex : "^(\w|\.|\-){2,}@[a-z]{2,}\.[a-z]{2,3}$"
+			}, options);
+
+			var pattern = new RegExp(settings.regex);
+			if(pattern.test($(this).val())){
+				if($(this).hasClass('incorrect'))
+					$(this).removeClass('incorrect')
+			} else {
+				if(!$(this).hasClass('incorrect'))
+					$(this).addClass('incorrect');
+			}
+		});
 	}
 })(jQuery);

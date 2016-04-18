@@ -15,5 +15,6 @@ $(document).ready(function (){
 	send.click(function() {
 		username.isValidUsername();
 		password.isValidPassword();
+		email.isValidEmail();
 	});
 });
