@@ -7,7 +7,7 @@ $(document).ready(function (){
 	var email = $("#email");
 
 	username.textInput({info : "Wprowadź username"});
-	password.passInput({info : "Wprowadź hasło"});
+	password.passInput();
 	email.textInput({info : "Wpisz e-mail"});
 
 	// klikniecie buttona aktywuje funkcje

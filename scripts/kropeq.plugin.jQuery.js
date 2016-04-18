@@ -15,18 +15,13 @@
 			// i najedziemy na inne pole, to poprzednie pole jesli jest puste
 			// to nam sie uzupelni, zeby nie bylo 2 pustych rownoczesnie
 			$(this).blur(function(){
-				if($(this).val() === ""){
-					$(this).val(rememberInfo);
-				};
-
+				if($(this).val() === "") $(this).val(rememberInfo);
 			});
 
 			// po kliknieciu na dane pole, jesli jest wartosc wejsciowa
 			// powinno wyczyscic pole
 			$(this).click(function(){
-				if($(this).val() === rememberInfo){
-					$(this).val("");
-				};
+				if($(this).val() === rememberInfo) $(this).val("");
 			});
 
 			// ustawienie mozliwosci poruszania sie po polach strzalkami
@@ -55,7 +50,7 @@
 						$(this).prev().prev().mouseenter();
 					}
 				}
-			})
+			});
 			// po najechaniu myszka na pole, jesli znajduje sie 
 			// wartosc wejsciowa - czysci pole
 			$(this).mouseenter(function(){
@@ -73,9 +68,7 @@
 				if($(this).val() === ""){
 					$(this).val(rememberInfo);
 					$(this).blur();
-					if($(this).hasClass("incorrect")){
-						$(this).removeClass("incorrect");
-					};
+					if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
 				} else {
 					$(this).blur();
 				}
@@ -100,15 +93,16 @@
 			}
 		});
 		
-	}
+	};
 
 	// sluzy tylko do input na Password
 	$.fn.passInput = function(options){
 		return this.each(function(){
 			var settings = $.extend({
+				info : "Wprowadź hasło",
 				bar : true
 			}, options);
-
+			$(this).attr("placeholder",settings.info);
 			// ustawienie mozliwosci poruszania sie po polach strzalkami
 			// w gore oraz w dol
 			$(this).keyup(function(e){
@@ -135,7 +129,7 @@
 						$(this).prev().prev().mouseenter();
 					}
 				}
-			})
+			});
 			// po najechaniu myszka na pole ustawia focus
 			$(this).mouseenter(function(){
 					$(this).focus();
@@ -161,7 +155,7 @@
 			// i prezentacja na strength bar
 			var result;
 			$(this).bind('keyup mouseout',function(){
-				if($(this).val()!= null){
+				if($(this).val()!== null){
 					var numbers = $(this).val().match(/[0-9]/g);
 					if(numbers === null ) numbers = 0;
 					else numbers = $(this).val().match(/[0-9]/g).length;
@@ -202,10 +196,10 @@
 					}
 				}
 
-			})
+			});
 		}
 		});
-	}
+	};
 
 	// mozliwosc ustawienia wlasnego regexu hasla
 	// a jesli brak, to jest domyslny regex
@@ -222,9 +216,9 @@
 			// --------------------------
 			if(pattern.test($(this).val())){
 				// sprawdzanie czy zawiera cyfre, mala i duza litere
-				if($(this).val().match(/[0-9]/g) !== null 
-				&& $(this).val().match(/[a-z]/g) !== null
-				&& $(this).val().match(/[A-Z]/g) !== null){
+				if($(this).val().match(/[0-9]/g) !== null &&
+				$(this).val().match(/[a-z]/g) !== null &&
+				$(this).val().match(/[A-Z]/g) !== null){
 					if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
 				} else {
 					if(!$(this).hasClass("incorrect"))	$(this).addClass("incorrect");
@@ -235,7 +229,7 @@
 				}
 			}
 		});
-	}
+	};
 
 	$.fn.isValidEmail = function(options){
 		return this.each(function(){
@@ -267,5 +261,5 @@
 					$(this).addClass('incorrect');
 			}
 		});
-	}
+	};
 })(jQuery);
