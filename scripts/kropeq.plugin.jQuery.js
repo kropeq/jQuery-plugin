@@ -154,7 +154,7 @@
 			// wyliczanie mocy hasla
 			// i prezentacja na strength bar
 			var result;
-			$(this).bind('keyup mouseout',function(){
+			$(this).bind('keyup keydown',function(){
 				if($(this).val()!== null){
 					var numbers = $(this).val().match(/[0-9]/g);
 					if(numbers === null ) numbers = 0;
@@ -176,14 +176,13 @@
 					// ustawienie koloru i wartosci strength bar
 					if(result >= 50 && result <= 80){
 						$('#barStrength').css({width: ""+result+"%", "background-color" : "orange"});
-						//document.getElementById('barStrength').innerHTML = Math.round(result)+"%";
-						document.getElementById('barStrength').innerHTML = "średnie";
+						document.getElementById('barStrength').innerHTML = "niezłe";
 					} else if ( result < 30 ){
 						$('#barStrength').css({width: ""+result+"%", "background-color" : "red"});
-						document.getElementById('barStrength').innerHTML = "złe";
+						document.getElementById('barStrength').innerHTML = "słabe";
 					} else if ( result >= 30 && result < 50){
 						$('#barStrength').css({width: ""+result+"%", "background-color" : "red"});
-						document.getElementById('barStrength').innerHTML = "słabe"; 
+						document.getElementById('barStrength').innerHTML = "średnie"; 
 					} else if ( result > 80 && result < 90){
 						$('#barStrength').css({width: ""+result+"%", "background-color" : "lightgreen"});
 						document.getElementById('barStrength').innerHTML = "dobre";
@@ -205,28 +204,35 @@
 	// a jesli brak, to jest domyslny regex
 	$.fn.isValidPassword = function(options){
 		return this.each(function(){
-			var settings = $.extend({
-				regex : "^[A-Za-z0-9]{8,20}"
-			}, options);
-			var pattern = new RegExp(settings.regex);
 			// zrobienie regex bez regexu
+			var numbers = $(this).val().match(/[0-9]/g);
+			if(numbers === null ) numbers = 0;
+			else numbers = $(this).val().match(/[0-9]/g).length;
+			
+			var letters = $(this).val().match(/[a-z]/g);
+			if(letters === null ) letters = 0;
+			else letters = $(this).val().match(/[a-z]/g).length;
 
-
-
-			// --------------------------
-			if(pattern.test($(this).val())){
-				// sprawdzanie czy zawiera cyfre, mala i duza litere
-				if($(this).val().match(/[0-9]/g) !== null &&
-				$(this).val().match(/[a-z]/g) !== null &&
-				$(this).val().match(/[A-Z]/g) !== null){
-					if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
-				} else {
-					if(!$(this).hasClass("incorrect"))	$(this).addClass("incorrect");
-				}			
+			var capitals = $(this).val().match(/[A-Z]/g);
+			if(capitals === null ) capitals = 0;
+			else capitals = $(this).val().match(/[A-Z]/g).length;
+			var len = $(this).val().length;
+			if(numbers>2) numbers=2;
+			if(letters>2) letters=2;
+			if(capitals>2) capitals=2;
+			if(len>10) len=10;
+			var result = ((numbers+letters+capitals+len/5)/8)*100;
+			if(result>=75){
+				if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
 			} else {
-				if(!$(this).hasClass("incorrect")){
-					$(this).addClass("incorrect");
+				// zabezpieczenie przed powielaniem dodawania labelki
+				if(!$(this).prev().hasClass("incorrectInfo")){
+					$('<label class="incorrectInfo">Zbyt słabe hasło!</label>').insertBefore($(this)).css({display:"block",width:"200px",height: "10px",margin:"5px auto", color: "red"});
+					window.setTimeout(function(){
+						$('.incorrectInfo').remove();
+					}, 2500);
 				}
+				if(!$(this).hasClass("incorrect"))	$(this).addClass("incorrect");
 			}
 		});
 	};
@@ -234,8 +240,8 @@
 	$.fn.isValidEmail = function(options){
 		return this.each(function(){
 			var settings = $.extend({
-				regex : "^(\w|\.|\-){2,}@[a-z0-9]{2,}\.[a-z]{2,3}$",
-				labelStyle : {display:"block",width:"200px",height: "10px",margin:"5px auto", },
+				regex : "^(\w|\.|\-){2,}@[a-z0-9]{2,}[\.]{1}[a-z]{2,3}$",
+				labelStyle : {display:"block",width:"200px",height: "10px",margin:"5px auto"},
 				labelColor : {color: "red"},
 				className : "emailInfo",
 				info : "Niepoprawnie wpisany email!"
