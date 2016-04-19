@@ -272,7 +272,8 @@
 	$.fn.codeInput = function(options){
 		return this.each(function(){
 			var settings = $.extend({
-				info : "Wpisz kod pocztowy"
+				info : "Wpisz kod pocztowy",
+				miejscowoscId : "miejscowosc"
 			}, options);
 
 			// zapamietujemy wprowadzona wartosc wejsciowa
@@ -323,12 +324,47 @@
 						}
 						if(count != 6){
 							if(!$(this).hasClass('incorrect'))
-							$(this).addClass('incorrect');
+								$(this).addClass('incorrect');
 						} else {
 							if($(this).hasClass('incorrect'))
-							$(this).removeClass('incorrect');
-							// TUTAJ BEDZIE WCZYTYWANIE PLIKU CSV 
-							// I UZUPEŁNIANIE MIEJSCOWOŚCI
+								$(this).removeClass('incorrect');
+
+							// WAŻNE!!!
+							// PLIK TXT MUSI BYĆ W TYM FOLDERZE CO HTML
+							// INACZEJ ODRZUCI JAKO ODRZUCENIE DOSTĘPU
+							// pobiera pod zmienna tekst z pliku .txt
+							var allText;
+							var rawFile = new XMLHttpRequest();
+							rawFile.open("GET", "kody.txt", false);
+							rawFile.onreadystatechange = function (){
+							    if(rawFile.readyState === 4){
+							        if(rawFile.status === 200 || rawFile.status == 0){
+							            allText = rawFile.responseText;
+							        }
+							    }
+							};
+							rawFile.send(null);
+
+							// dzieli pobrany tekst z pliku na linie
+							// potem szuka w linii adresu pocztowego
+							// jak znajdzie, to dzieli przez tabulacje
+							// i wyciaga 3-ci element z linii  ( miasto )
+							var linie = new Array();
+							linie = allText.split(/\r\n|\n/);
+							var rozmiar = linie.length;
+							var miasto;
+							for(var i=0; i<rozmiar; i++){
+								if(linie[i].lastIndexOf($(this).val()) != -1){
+									miasto = linie[i].split(/\t/);
+									$("#"+settings.miejscowoscId).val(miasto[2]);
+									break;
+								}
+								if(i == rozmiar-1){
+									$("#"+settings.miejscowoscId).val("Nie rozpoznano!");
+									if(!$(this).hasClass('incorrect'))
+										$(this).addClass('incorrect');
+								}
+							}
 						}
 					} else {
 

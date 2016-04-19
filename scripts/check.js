@@ -7,7 +7,7 @@ $(document).ready(function (){
 	var email = $("#email");
 	var code = $("#kod");
 
-	username.textInput({info : "Wprowadź username"});
+	username.textInput({info : "Wprowadź swoją nazwę"});
 	password.passInput();
 	email.textInput({info : "Wpisz e-mail"});
 	code.codeInput();
