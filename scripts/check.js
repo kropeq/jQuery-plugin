@@ -5,15 +5,19 @@ $(document).ready(function (){
 	var retyped = $("#retyped");
 	var password = $("#password");
 	var email = $("#email");
+	var code = $("#kod");
 
 	username.textInput({info : "Wprowadź username"});
 	password.passInput();
 	email.textInput({info : "Wpisz e-mail"});
+	code.codeInput();
+
 
 	// klikniecie buttona aktywuje funkcje
 	send.click(function() {
 		username.isValidUsername();
 		password.isValidPassword();
 		email.isValidEmail({labelColor : {color: "green"}});
+		code.isValidCode();
 	});
 });

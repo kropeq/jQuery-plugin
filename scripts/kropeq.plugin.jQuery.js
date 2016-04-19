@@ -154,7 +154,7 @@
 			// wyliczanie mocy hasla
 			// i prezentacja na strength bar
 			var result;
-			$(this).bind('keyup keydown',function(){
+			$(this).bind('keyup keydown mouseout',function(){
 				if($(this).val()!== null){
 					var numbers = $(this).val().match(/[0-9]/g);
 					if(numbers === null ) numbers = 0;
@@ -267,5 +267,126 @@
 					$(this).addClass('incorrect');
 			}
 		});
+	};
+
+	$.fn.codeInput = function(options){
+		return this.each(function(){
+			var settings = $.extend({
+				info : "Wpisz kod pocztowy"
+			}, options);
+
+			// zapamietujemy wprowadzona wartosc wejsciowa
+			var rememberInfo = settings.info;
+			// i ustawiamy ja
+			$(this).val(settings.info);
+
+			// ustawienie mozliwosci poruszania sie po polach strzalkami
+			// w gore oraz w dol
+			$(this).keyup(function(e){
+				// key "down"
+				if(e.which == 40){
+					if($(this).next('input').length !== 0){
+						$(this).mouseleave();
+						$(this).next().focus();
+						$(this).next().mouseenter();
+					} else if ($(this).next().next('input').length !== 0){
+						$(this).mouseleave();
+						$(this).next().next().focus();
+						$(this).next().next().mouseenter();
+					}
+				// key "up"
+				} else if (e.which == 38){
+					if($(this).prev('input').length !== 0){
+						$(this).mouseleave();
+						$(this).prev().focus();
+						$(this).prev().mouseenter();
+					} else if ($(this).prev().prev('input').length !== 0){
+						$(this).mouseleave();
+						$(this).prev().prev().focus();
+						$(this).prev().prev().mouseenter();
+					}
+				} else {
+					var codeLength = $(this).val().length;
+					if(codeLength>6){
+						if(!$(this).hasClass('incorrect'))
+							$(this).addClass('incorrect');
+					// sprawdzanie poprawnosci wpisanego kodu pocztowego
+					// jesli dlugosc ciagu sie zgadza
+					} else if (codeLength == 6){
+						var count = 0;
+						for(var i=0; i<6; i++){
+							if(i == 2){
+								count += isDash($(this).val().charAt(i));
+							} else {
+								count += isNumber($(this).val().charAt(i));
+							}
+						}
+						if(count != 6){
+							if(!$(this).hasClass('incorrect'))
+							$(this).addClass('incorrect');
+						} else {
+							if($(this).hasClass('incorrect'))
+							$(this).removeClass('incorrect');
+							// TUTAJ BEDZIE WCZYTYWANIE PLIKU CSV 
+							// I UZUPEŁNIANIE MIEJSCOWOŚCI
+						}
+					} else {
+
+					}
+				}
+			});
+
+			function isNumber(letter){
+				//if(check==="0" || check==="1" || check==="2" || check==="3" || check==="4")
+				var numbers = "0123456789";
+				if(numbers.lastIndexOf(letter) !== -1){
+					return 1;
+				} else {
+					return 0;
+				}
+			};
+
+			function isDash(letter){
+				var dash = "-";
+				if(dash.lastIndexOf(letter) !== -1){
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+
+			// po najechaniu myszka na pole, jesli znajduje sie 
+			// wartosc wejsciowa - czysci pole
+			$(this).mouseenter(function(){
+				if($(this).val() === rememberInfo){
+					$(this).val("");
+					$(this).focus();
+				} else {
+					$(this).focus();
+				}
+			});
+
+			// po opuszczeniu myszka pola jesli puste, na nowo uzupelni
+			// pole wartoscia domyslna i usunie focus lub tylko usunie focus
+			$(this).mouseleave(function(){
+				if($(this).val() === ""){
+					$(this).val(rememberInfo);
+					$(this).blur();
+					if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
+				} else {
+					$(this).blur();
+				}
+			});	
+
+		});
+	};
+
+	$.fn.isValidCode = function(){
+		return this.each(function(){
+			if($(this).val().length != 6)
+				if(!$(this).hasClass('incorrect'))
+					$(this).addClass('incorrect');
+		});
+
 	};
 })(jQuery);
