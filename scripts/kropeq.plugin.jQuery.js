@@ -65,13 +65,9 @@
 			// po opuszczeniu myszka pola jesli puste, na nowo uzupelni
 			// pole wartoscia domyslna i usunie focus lub tylko usunie focus
 			$(this).mouseleave(function(){
-				if($(this).val() === ""){
-					$(this).val(rememberInfo);
-					$(this).blur();
-					if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
-				} else {
-					$(this).blur();
-				}
+				if($(this).val() === "")
+					if($(this).hasClass("incorrect")) 
+						$(this).removeClass("incorrect");
 			});	
 		});
 	};
@@ -136,67 +132,63 @@
 			});
 
 			// po opuszczeniu myszka pola jesli puste, usunie bledna validacje
-			// i usunie focus lub tylko usunie focus
 			$(this).mouseleave(function(){
-				if($(this).val() === ""){
-					$(this).blur();
+				if($(this).val() === "")
 					if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
-				} else {
-					$(this).blur();
-				}
 			});	
+
 			if(settings.bar===true){
-			// STRENGTH BAR
-			$('<div id="passwordStrength"><div id="barStrength"></div></div>').insertBefore($(this));
-			$('#passwordStrength').css({position: "relative", margin: "0 auto", width: "80%", height: "20px", "background-color": "grey", "text-align": "center", "border-radius" : "5px"});
-			$('#barStrength').css({position: "absolute", width: "0%", height: "100%", "background-color": "green", "font-weight": "bold", color: "white","border-radius" : "5px"});
-			
-			// wyliczanie mocy hasla
-			// i prezentacja na strength bar
-			var result;
-			$(this).bind('keyup keydown mouseout',function(){
-				if($(this).val()!== null){
-					var numbers = $(this).val().match(/[0-9]/g);
-					if(numbers === null ) numbers = 0;
-					else numbers = $(this).val().match(/[0-9]/g).length;
+				// STRENGTH BAR
+				$('<div id="passwordStrength"><div id="barStrength"></div></div>').insertBefore($(this));
+				$('#passwordStrength').css({position: "relative", margin: "0 auto", width: "80%", height: "20px", "background-color": "grey", "text-align": "center", "border-radius" : "5px"});
+				$('#barStrength').css({position: "absolute", width: "0%", height: "100%", "background-color": "green", "font-weight": "bold", color: "white","border-radius" : "5px"});
+				
+				// wyliczanie mocy hasla
+				// i prezentacja na strength bar
+				var result;
+				$(this).bind('keyup keydown mouseout',function(){
+					if($(this).val()!== null){
+						var numbers = $(this).val().match(/[0-9]/g);
+						if(numbers === null ) numbers = 0;
+						else numbers = $(this).val().match(/[0-9]/g).length;
 
-					var letters = $(this).val().match(/[a-z]/g);
-					if(letters === null ) letters = 0;
-					else letters = $(this).val().match(/[a-z]/g).length;
+						var letters = $(this).val().match(/[a-z]/g);
+						if(letters === null ) letters = 0;
+						else letters = $(this).val().match(/[a-z]/g).length;
 
-					var capitals = $(this).val().match(/[A-Z]/g);
-					if(capitals === null ) capitals = 0;
-					else capitals = $(this).val().match(/[A-Z]/g).length;
-					var len = $(this).val().length;
-					if(numbers>2) numbers=2;
-					if(letters>2) letters=2;
-					if(capitals>2) capitals=2;
-					if(len>8) len=8;
-					result = ((numbers+letters+capitals+len/4)/8)*100;
-					// ustawienie koloru i wartosci strength bar
-					if(result >= 50 && result <= 80){
-						$('#barStrength').css({width: ""+result+"%", "background-color" : "orange"});
-						document.getElementById('barStrength').innerHTML = "niezłe";
-					} else if ( result < 30 ){
-						$('#barStrength').css({width: ""+result+"%", "background-color" : "red"});
-						document.getElementById('barStrength').innerHTML = "słabe";
-					} else if ( result >= 30 && result < 50){
-						$('#barStrength').css({width: ""+result+"%", "background-color" : "red"});
-						document.getElementById('barStrength').innerHTML = "średnie"; 
-					} else if ( result > 80 && result < 90){
-						$('#barStrength').css({width: ""+result+"%", "background-color" : "lightgreen"});
-						document.getElementById('barStrength').innerHTML = "dobre";
-					} else if ( result >= 90){
-						$('#barStrength').css({width: ""+result+"%", "background-color" : "green"});
-						document.getElementById('barStrength').innerHTML = "świetne!";
+						var capitals = $(this).val().match(/[A-Z]/g);
+						if(capitals === null ) capitals = 0;
+						else capitals = $(this).val().match(/[A-Z]/g).length;
+						var len = $(this).val().length;
+						if(numbers>2) numbers=2;
+						if(letters>2) letters=2;
+						if(capitals>2) capitals=2;
+						if(len>8) len=8;
+						result = ((numbers+letters+capitals+len/4)/8)*100;
+						// ustawienie koloru i wartosci strength bar
+						if(result >= 50 && result <= 80){
+							$('#barStrength').css({width: ""+result+"%", "background-color" : "orange"});
+							document.getElementById('barStrength').innerHTML = "niezłe";
+						} else if ( result < 30 ){
+							$('#barStrength').css({width: ""+result+"%", "background-color" : "red"});
+							document.getElementById('barStrength').innerHTML = "słabe";
+						} else if ( result >= 30 && result < 50){
+							$('#barStrength').css({width: ""+result+"%", "background-color" : "red"});
+							document.getElementById('barStrength').innerHTML = "średnie"; 
+						} else if ( result > 80 && result < 90){
+							$('#barStrength').css({width: ""+result+"%", "background-color" : "lightgreen"});
+							document.getElementById('barStrength').innerHTML = "dobre";
+						} else if ( result >= 90){
+							$('#barStrength').css({width: ""+result+"%", "background-color" : "green"});
+							document.getElementById('barStrength').innerHTML = "świetne!";
+						}
+						if(result === 0){
+							document.getElementById('barStrength').innerHTML = "";
+						}
 					}
-					if(result === 0){
-						document.getElementById('barStrength').innerHTML = "";
-					}
-				}
 
-			});
-		}
+				});
+			}
 		});
 	};
 
@@ -338,7 +330,7 @@
 							rawFile.open("GET", "kody.txt", false);
 							rawFile.onreadystatechange = function (){
 							    if(rawFile.readyState === 4){
-							        if(rawFile.status === 200 || rawFile.status == 0){
+							        if(rawFile.status === 200 || rawFile.status === 0){
 							            allText = rawFile.responseText;
 							        }
 							    }
@@ -353,13 +345,13 @@
 							linie = allText.split(/\r\n|\n/);
 							var rozmiar = linie.length;
 							var miasto;
-							for(var i=0; i<rozmiar; i++){
-								if(linie[i].lastIndexOf($(this).val()) != -1){
-									miasto = linie[i].split(/\t/);
+							for(var j=0; j<rozmiar; j++){
+								if(linie[j].lastIndexOf($(this).val()) != -1){
+									miasto = linie[j].split(/\t/);
 									$("#"+settings.miejscowoscId).val(miasto[2]);
 									break;
 								}
-								if(i == rozmiar-1){
+								if(j == rozmiar-1){
 									$("#"+settings.miejscowoscId).val("Nie rozpoznano!");
 									if(!$(this).hasClass('incorrect'))
 										$(this).addClass('incorrect');
@@ -380,7 +372,7 @@
 				} else {
 					return 0;
 				}
-			};
+			}
 
 			function isDash(letter){
 				var dash = "-";
@@ -390,6 +382,12 @@
 					return 0;
 				}
 			}
+			// sluzy do tego, ze gdy z myszki przejdziemy na klawiature
+			// i najedziemy na inne pole, to poprzednie pole jesli jest puste
+			// to nam sie uzupelni, zeby nie bylo 2 pustych rownoczesnie
+			$(this).blur(function(){
+				if($(this).val() === "") $(this).val(rememberInfo);
+			});
 
 			// po najechaniu myszka na pole, jesli znajduje sie 
 			// wartosc wejsciowa - czysci pole
@@ -405,13 +403,9 @@
 			// po opuszczeniu myszka pola jesli puste, na nowo uzupelni
 			// pole wartoscia domyslna i usunie focus lub tylko usunie focus
 			$(this).mouseleave(function(){
-				if($(this).val() === ""){
-					$(this).val(rememberInfo);
-					$(this).blur();
-					if($(this).hasClass("incorrect")) $(this).removeClass("incorrect");
-				} else {
-					$(this).blur();
-				}
+				if($(this).val() === "")
+					if($(this).hasClass("incorrect")) 
+						$(this).removeClass("incorrect");
 			});	
 
 		});
