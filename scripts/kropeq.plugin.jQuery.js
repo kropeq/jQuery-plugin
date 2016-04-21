@@ -341,7 +341,7 @@
 							// potem szuka w linii adresu pocztowego
 							// jak znajdzie, to dzieli przez tabulacje
 							// i wyciaga 3-ci element z linii  ( miasto )
-							var linie = new Array();
+							var linie = [];
 							linie = allText.split(/\r\n|\n/);
 							var rozmiar = linie.length;
 							var miasto;
@@ -418,5 +418,16 @@
 					$(this).addClass('incorrect');
 		});
 
+	};
+
+	$.fn.isAllValid = function(){
+		return this.each(function(){
+			var inputs = $('.incorrect');
+			if(inputs.length === 0){
+				alert("WSZYSTKO OK!");
+			} else {
+				alert("POPRAW BŁĘDY...");
+			}
+		});
 	};
 })(jQuery);

@@ -19,5 +19,6 @@ $(document).ready(function (){
 		password.isValidPassword();
 		email.isValidEmail({labelColor : {color: "green"}});
 		code.isValidCode();
+		send.isAllValid();
 	});
 });
